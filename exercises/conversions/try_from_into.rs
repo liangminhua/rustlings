@@ -26,7 +26,18 @@ struct Color {
 // Tuple implementation
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = Box<dyn error::Error>;
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (r, g, b) = tuple;
+        if r < 255 && r > 0 && g < 255 && g > 0 && b < 255 && b > 0 {
+            Ok(Color {
+                red: r as u8,
+                green: r as u8,
+                blue: r as u8,
+            })
+        } else {
+            Err("should between 0-255")
+        }
+    }
 }
 
 // Array implementation
