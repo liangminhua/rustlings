@@ -11,7 +11,6 @@ struct Person {
     age: usize,
 }
 
-// I AM NOT DONE
 
 // Steps:
 // 1. If the length of the provided string is 0, an error should be returned
@@ -26,6 +25,23 @@ struct Person {
 impl FromStr for Person {
     type Err = Box<dyn error::Error>;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.len() == 0 {
+            return Err("empty string cannot be parsed into Person".into());
+        }
+        let parts: Vec<&str> = s.split(',').collect();
+        if (parts.len() < 2) | (parts.len() > 2) {
+            return Err("must contain 2 fields exactly: name and age".into());
+        }
+        let name = if parts[0] != "" {
+            String::from(parts[0])
+        } else {
+            return Err("name field must not be empty".into());
+        };
+        if let Ok(age) = parts[1].parse::<usize>() {
+            Ok(Person { age, name })
+        } else {
+            return Err("cannot parse age".into());
+        }
     }
 }
 
